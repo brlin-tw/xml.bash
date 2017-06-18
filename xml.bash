@@ -12,18 +12,18 @@ set -o pipefail
 ## BASHDOC: Shell Variables » Bash Variables
 ## BASHDOC: Basic Shell Features » Shell Parameters » Special Parameters
 if [ -v "BASH_SOURCE[0]" ]; then
-	RUNTIME_EXECUTABLE_PATH="$(realpath --strip "${BASH_SOURCE[0]}")"
-	RUNTIME_EXECUTABLE_FILENAME="$(basename "${RUNTIME_EXECUTABLE_PATH}")"
-	RUNTIME_EXECUTABLE_NAME="${RUNTIME_EXECUTABLE_FILENAME%.*}"
-	RUNTIME_EXECUTABLE_DIRECTORY="$(dirname "${RUNTIME_EXECUTABLE_PATH}")"
-	RUNTIME_COMMANDLINE_BASECOMMAND="${0}"
+	_XML_BASH_RUNTIME_EXECUTABLE_PATH="$(realpath --strip "${BASH_SOURCE[0]}")"
+	_XML_BASH_RUNTIME_EXECUTABLE_FILENAME="$(basename "${_XML_BASH_RUNTIME_EXECUTABLE_PATH}")"
+	_XML_BASH_RUNTIME_EXECUTABLE_NAME="${_XML_BASH_RUNTIME_EXECUTABLE_FILENAME%.*}"
+	_XML_BASH_RUNTIME_EXECUTABLE_DIRECTORY="$(dirname "${_XML_BASH_RUNTIME_EXECUTABLE_PATH}")"
+	_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND="${0}"
 	declare -r\
-		RUNTIME_EXECUTABLE_FILENAME\
-		RUNTIME_EXECUTABLE_DIRECTORY\
-		RUNTIME_EXECUTABLE_PATHABSOLUTE\
-		RUNTIME_COMMANDLINE_BASECOMMAND
+		_XML_BASH_RUNTIME_EXECUTABLE_FILENAME\
+		_XML_BASH_RUNTIME_EXECUTABLE_DIRECTORY\
+		_XML_BASH_RUNTIME_EXECUTABLE_PATHABSOLUTE\
+		_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND
 fi
-declare -ar RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
+declare -ar _XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 
 ## init function: entrypoint of main program
 ## This function is called near the end of the file,
@@ -134,12 +134,12 @@ _xml_bash_print_help(){
 }; declare -fr _xml_bash_print_help;
 
 _xml_bash_process_commandline_parameters() {
-	if [ "${#RUNTIME_COMMANDLINE_PARAMETERS[@]}" -eq 0 ]; then
+	if [ "${#_XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS[@]}" -eq 0 ]; then
 		return 0
 	fi
 
 	# modifyable parameters for parsing by consuming
-	local -a parameters=("${RUNTIME_COMMANDLINE_PARAMETERS[@]}")
+	local -a parameters=("${_XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS[@]}")
 
 	# Normally we won't want debug traces to appear during parameter parsing, so we  add this flag and defer it activation till returning(Y: Do debug)
 	local enable_debug=N
