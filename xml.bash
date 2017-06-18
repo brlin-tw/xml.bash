@@ -88,7 +88,7 @@ xml_transform_node(){
 		"${xml_file}"
 }
 
-xml_format_node(){
+xml_beautify_file(){
 	local xml_file="$1"
 
 	local temp_file
