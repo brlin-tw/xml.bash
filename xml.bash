@@ -47,7 +47,8 @@ _xml_bash_create_temp_file(){
 			bash.xml.XXXXXX.xml
 }
 
-xml_delete_node(){
+# Remove data from XML file specified by XPath 
+xml_remove_xpath(){
 	local -r xml_file="$1"; shift
 	local -r node_xpath="$1"
 
@@ -69,7 +70,8 @@ xml_delete_node(){
 		"${xml_file}"
 }
 
-xml_transform_node(){
+# Transform an XML file according to an XSL file
+xml_transform_file(){
 	local xsl_file="$1"; shift
 	local xml_file="$1"
 
