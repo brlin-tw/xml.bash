@@ -90,6 +90,7 @@ xml_transform_file(){
 		"${xml_file}"
 }
 
+# Beautify a XML file(indentation: tabular charactor, currently not adjustable)
 xml_beautify_file(){
 	local xml_file="$1"
 
