@@ -1,5 +1,5 @@
 # xml.bash
-A GNU Bash wrapper and library hibrid for XML markup processing(you may use it as a standalone command, or source it and utilize it in GNU Bash scripts)  
+A GNU Bash wrapper and library hybrid for XML markup processing(you may use it as a standalone command, or source it and utilize it in GNU Bash scripts)  
 <https://github.com/Lin-Buo-Ren/xml.bash>
 
 NOTE: This program is in early development stage, only library part is currently implemented.
