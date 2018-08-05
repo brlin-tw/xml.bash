@@ -3,10 +3,11 @@
 
 ## Makes debuggers' life easier - Unofficial Bash Strict Mode
 ## BASHDOC: Shell Builtin Commands - Modifying Shell Behavior - The Set Builtin
-set -o errexit
-set -o errtrace
-set -o nounset
-set -o pipefail
+set \
+	-o errexit \
+	-o errtrace \
+	-o nounset \
+	-o pipefail
 
 ## Non-overridable Primitive Variables
 ## BASHDOC: Shell Variables » Bash Variables
