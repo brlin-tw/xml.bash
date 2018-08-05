@@ -52,22 +52,35 @@ xml_remove_xpath(){
 	local -r xml_file="$1"; shift
 	local -r node_xpath="$1"
 
-	local temp_file
-	temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
+	case "${xml_file}" in
+		-)
+			xmlstarlet\
+				edit\
+					--pf\
+					--ps\
+					--delete\
+					"${node_xpath}"
+		;;
+		*)
+			local temp_file
+			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
-	xmlstarlet\
-		edit\
-			--pf\
-			--ps\
-			--delete\
-			"${node_xpath}"\
-			"${xml_file}"\
-			>"${temp_file}"
+			xmlstarlet\
+				edit\
+					--pf\
+					--ps\
+					--delete\
+					"${node_xpath}"\
+					"${xml_file}"\
+					>"${temp_file}"
 
-	mv\
-		--force\
-		"${temp_file}"\
-		"${xml_file}"
+			mv\
+				--force\
+				"${temp_file}"\
+				"${xml_file}"
+		;;
+	esac
+	return
 }
 
 # Transform an XML file according to an XSL file
@@ -75,38 +88,58 @@ xml_transform_file(){
 	local xsl_file="$1"; shift
 	local xml_file="$1"
 
-	local temp_file
-	temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
+	case "${xml_file}" in
+		-)
+			xmlstarlet\
+				transform\
+					"${xsl_file}"
+		;;
+		*)
+			local temp_file
+			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
-	xmlstarlet\
-		transform\
-			"${xsl_file}"\
-			"${xml_file}"\
-			>"${temp_file}"
+			xmlstarlet\
+				transform\
+					"${xsl_file}"\
+					"${xml_file}"\
+					>"${temp_file}"
 
-	mv\
-		--force\
-		"${temp_file}"\
-		"${xml_file}"
+			mv\
+				--force\
+				"${temp_file}"\
+				"${xml_file}"
+		;;
+	esac
+	return
 }
 
 # Beautify a XML file(indentation: tabular charactor, currently not adjustable)
 xml_beautify_file(){
 	local xml_file="$1"
 
-	local temp_file
-	temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
+	case "${xml_file}" in
+		-)
+			xmlstarlet\
+				format\
+					--indent-tab
+		;;
+		*)
+			local temp_file
+			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
-	xmlstarlet\
-		format\
-			--indent-tab\
-			"${xml_file}"\
-			>"${temp_file}"
+			xmlstarlet\
+				format\
+					--indent-tab\
+					"${xml_file}"\
+					>"${temp_file}"
 
-	mv\
-		--force\
-		"${temp_file}"\
-		"${xml_file}"
+			mv\
+				--force\
+				"${temp_file}"\
+				"${xml_file}"
+		;;
+	esac
+
 }
 
 ## Traps: Functions that are triggered when certain condition occurred
