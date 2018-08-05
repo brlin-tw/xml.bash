@@ -31,7 +31,7 @@ declare -ar _XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 _xml_bash_init(){
 	if ! process_commandline_parameters; then
 		printf\
-			"Error: %s: Invalid command-line parameters.\n"\
+			'Error: %s: Invalid command-line parameters.\n'\
 			"${FUNCNAME[0]}"\
 			1>&2
 		print_help
@@ -145,7 +145,7 @@ xml_beautify_file(){
 ## Traps: Functions that are triggered when certain condition occurred
 ## Shell Builtin Commands » Bourne Shell Builtins » trap
 _xml_bash_trap_errexit(){
-	printf "An error occurred and the script is prematurely aborted\n" 1>&2
+	printf 'An error occurred and the script is prematurely aborted\n' 1>&2
 	return 0
 }; declare -fr _xml_bash_trap_errexit
 
@@ -156,16 +156,16 @@ _xml_bash_trap_exit(){
 _xml_bash_trap_return(){
 	local returning_function="${1}"
 
-	printf "DEBUG: %s: returning from %s\n" "${FUNCNAME[0]}" "${returning_function}" 1>&2
+	printf 'DEBUG: %s: returning from %s\n' "${FUNCNAME[0]}" "${returning_function}" 1>&2
 }; declare -fr _xml_bash_trap_return
 
 _xml_bash_trap_interrupt(){
-	printf "Recieved SIGINT, script is interrupted.\n" 1>&2
+	printf 'Recieved SIGINT, script is interrupted.\n' 1>&2
 	return 0
 }; declare -fr _xml_bash_trap_interrupt
 
 _xml_bash_print_help(){
-	printf "Currently no help messages are available for this program\n" 1>&2
+	printf 'Currently no help messages are available for this program\n' 1>&2
 	return 0
 }; declare -fr _xml_bash_print_help;
 
@@ -195,7 +195,7 @@ _xml_bash_process_commandline_parameters() {
 					enable_debug="Y"
 					;;
 				*)
-					printf "ERROR: Unknown command-line argument \"%s\"\n" "${parameters[0]}" >&2
+					printf 'ERROR: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
 					return 1
 					;;
 			esac
