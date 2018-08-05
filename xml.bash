@@ -185,14 +185,14 @@ _xml_bash_process_commandline_parameters() {
 			break
 		else
 			case "${parameters[0]}" in
-				"--help"\
-				|"-h")
+				--help\
+				|-h)
 					print_help;
 					exit 0
 					;;
-				"--debug"\
-				|"-d")
-					enable_debug="Y"
+				--debug\
+				|-d)
+					enable_debug=Y
 					;;
 				*)
 					printf 'ERROR: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
@@ -200,14 +200,14 @@ _xml_bash_process_commandline_parameters() {
 					;;
 			esac
 			# shift array by 1 = unset 1st then repack
-			unset "parameters[0]"
+			unset 'parameters[0]'
 			if [ "${#parameters[@]}" -ne 0 ]; then
 				parameters=("${parameters[@]}")
 			fi
 		fi
 	done
 
-	if [ "${enable_debug}" = "Y" ]; then
+	if [ "${enable_debug}" = Y ]; then
 		trap 'trap_return "${FUNCNAME[0]}"' RETURN
 		set -o xtrace
 	fi
@@ -219,5 +219,5 @@ _xml_bash_process_commandline_parameters() {
 ## This script is based on the GNU Bash Shell Script Template project
 ## https://github.com/Lin-Buo-Ren/GNU-Bash-Shell-Script-Template
 ## and is based on the following version:
-declare -r META_BASED_ON_GNU_BASH_SHELL_SCRIPT_TEMPLATE_VERSION="v1.26.0-32-g317af27-dirty"
+declare -r META_BASED_ON_GNU_BASH_SHELL_SCRIPT_TEMPLATE_VERSION=v1.26.0-32-g317af27-dirty
 ## You may rebase your script to incorporate new features and fixes from the template
