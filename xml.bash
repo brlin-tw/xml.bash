@@ -213,7 +213,7 @@ _xml_bash_process_commandline_parameters() {
 		set -o xtrace
 	fi
 	return 0
-}; declare -fr _xml_bash_process_commandline_parameters;
+}; declare -fr _xml_bash_process_commandline_parameters
 
 # init "${@}"
 
