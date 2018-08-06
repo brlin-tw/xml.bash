@@ -170,25 +170,25 @@ _xml_bash_print_help(){
 	# Backticks in Markdown is <code> syntax
 	# shellcheck disable=SC2016
 	{
-		printf -- "xml.bash's Help Information\\n"
+		printf -- "%s's Help Information\\n" "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
 		printf -- '===========================\n'
 		printf -- 'HINT: This help info is in Markdown syntax, redirect the stderr output to a file and read it using your preferred Markdown reader!\n\n'
 		printf -- '``````bash\n'
-		printf -- './xml.bash --help 2>xml.bash.help.markdown\n'
-		printf -- 'xdg-open xml.bash.help.markdown\n'
+		printf -- '"%s" --help 2> "%s.help.markdown"\n' "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}" "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
+		printf -- 'xdg-open "%s.help.markdown"\n' "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
 		printf -- '``````\n\n'
 		printf -- 'Synopsis\n'
 		printf -- '--------\n'
 		printf -- '### Library Call Mode ###\n'
-		printf -- 'Source this script in a script and directly call all the functions defined in the xml.bash library.\n\n'
+		printf -- 'Source this script in a script and directly call all the functions defined in the %s library.\n\n' "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
 		printf -- '````````````````bash\n'
-		printf -- 'source xml.bash\n'
+		printf -- 'source "%s"\n' "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
 		printf -- 'xml_beautify_file to_be_beautified.xml\n'
 		printf -- '````````````````````\n\n'
 		printf -- '### Direct Execution Mode ###\n'
 		printf -- 'Directly execute xml.bash and use it under the command-line interface.\n\n'
 		printf -- '````````````````bash\n'
-		printf -- './xml.bash --beautify-file to_be_beautified.xml\n'
+		printf -- '"%s" --beautify-file to_be_beautified.xml\n' "${_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND}"
 		printf -- '````````````````````\n\n'
 		printf -- 'Implemented Functions\n'
 		printf -- '---------------------\n'
