@@ -31,7 +31,7 @@ declare -ar RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 init(){
 	if ! process_commandline_parameters; then
 		printf\
-			"Error: %s: Invalid command-line parameters.\n"\
+			'Error: %s: Invalid command-line parameters.\n'\
 			"${FUNCNAME[0]}"\
 			1>&2
 		print_help
@@ -41,16 +41,16 @@ init(){
 	export GIT_DIR="${RUNTIME_EXECUTABLE_DIRECTORY}/.git"
 	export GIT_WORK_TREE="${RUNTIME_EXECUTABLE_DIRECTORY}"
 
-	printf "Setting Project-specific Git configuration..."
+	printf 'Setting Project-specific Git configuration...'
 	git config include.path ../.gitconfig\
-		&& printf "done\n"
+		&& printf 'done\n'
 
-	printf "Fetching submodules..."
+	printf 'Fetching submodules...'
 	git submodule update --init --recursive\
-		&& printf "done\n"\
-		|| printf "failed\n"
+		&& printf 'done\n'\
+		|| printf 'failed\n'
 
-	printf "Setting Git Hooks..."
+	printf 'Setting Git Hooks...'
 	ln \
 		--symbolic\
 		--relative\
@@ -58,8 +58,8 @@ init(){
 		--verbose\
 		"${RUNTIME_EXECUTABLE_DIRECTORY}/Git Pre-commit Hook for GNU Bash Projects/Pre-commit Script.bash"\
 		"${GIT_DIR}/hooks/pre-commit"\
-		&& printf "done\n"\
-		|| printf "failed\n"
+		&& printf 'done\n'\
+		|| printf 'failed\n'
 
 	exit 0
 }; declare -fr init
@@ -67,7 +67,7 @@ init(){
 ## Traps: Functions that are triggered when certain condition occurred
 ## Shell Builtin Commands » Bourne Shell Builtins » trap
 trap_errexit(){
-	printf "An error occurred and the script is prematurely aborted\n" 1>&2
+	printf 'An error occurred and the script is prematurely aborted\n' 1>&2
 	return 0
 }; declare -fr trap_errexit; trap trap_errexit ERR
 
@@ -78,16 +78,16 @@ trap_exit(){
 trap_return(){
 	local returning_function="${1}"
 
-	printf "DEBUG: %s: returning from %s\n" "${FUNCNAME[0]}" "${returning_function}" 1>&2
+	printf 'DEBUG: %s: returning from %s\n' "${FUNCNAME[0]}" "${returning_function}" 1>&2
 }; declare -fr trap_return
 
 trap_interrupt(){
-	printf "Recieved SIGINT, script is interrupted.\n" 1>&2
+	printf 'Recieved SIGINT, script is interrupted.\n' 1>&2
 	return 0
 }; declare -fr trap_interrupt; trap trap_interrupt INT
 
 print_help(){
-	printf "Currently no help messages are available for this program\n" 1>&2
+	printf 'Currently no help messages are available for this program\n' 1>&2
 	return 0
 }; declare -fr print_help;
 
@@ -107,29 +107,29 @@ process_commandline_parameters() {
 			break
 		else
 			case "${parameters[0]}" in
-				"--help"\
-				|"-h")
-					print_help;
+					--help\
+					|-h)
+					print_help
 					exit 0
 					;;
-				"--debug"\
-				|"-d")
-					enable_debug="Y"
+					--debug\
+					|-d)
+					enable_debug=Y
 					;;
 				*)
-					printf "ERROR: Unknown command-line argument \"%s\"\n" "${parameters[0]}" >&2
+					printf 'ERROR: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
 					return 1
 					;;
 			esac
 			# shift array by 1 = unset 1st then repack
-			unset "parameters[0]"
+			unset 'parameters[0]'
 			if [ "${#parameters[@]}" -ne 0 ]; then
 				parameters=("${parameters[@]}")
 			fi
 		fi
 	done
 
-	if [ "${enable_debug}" = "Y" ]; then
+	if [ "${enable_debug}" = Y ]; then
 		trap 'trap_return "${FUNCNAME[0]}"' RETURN
 		set -o xtrace
 	fi
