@@ -213,7 +213,7 @@ _xml_bash_process_commandline_parameters() {
 	fi
 
 	# modifyable parameters for parsing by consuming
-	local -a parameters=("${_XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS[@]}")
+	local -a parameters=("${@}")
 
 	# Normally we won't want debug traces to appear during parameter parsing, so we add this flag and defer it activation till returning(Y: Do debug)
 	local enable_debug=N
