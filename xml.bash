@@ -167,7 +167,35 @@ _xml_bash_trap_interrupt(){
 }; declare -fr _xml_bash_trap_interrupt
 
 _xml_bash_print_help(){
-	printf 'Currently no help messages are available for this program\n' 1>&2
+	# Backticks in Markdown is <code> syntax
+	# shellcheck disable=SC2016
+	{
+		printf -- "xml.bash's Help Information\\n"
+		printf -- '===========================\n'
+		printf -- 'HINT: This help info is in Markdown syntax, redirect the stderr output to a file and read it using your preferred Markdown reader!\n\n'
+		printf -- '``````bash\n'
+		printf -- ''
+		printf -- 'Synopsis\n'
+		printf -- '--------\n'
+		printf -- '### Library Call Mode ###\n'
+		printf -- 'Source this script in a script and directly call all the functions defined in the xml.bash library.\n\n'
+		printf -- '````````````````bash\n'
+		printf -- 'source xml.bash\n'
+		printf -- 'xml_beautify_file to_be_beautified.xml\n'
+		printf -- '````````````````````\n\n'
+		printf -- '### Direct Execution Mode ###\n'
+		printf -- 'Directly execute xml.bash and use it under the command-line interface.\n\n'
+		printf -- '````````````````bash\n'
+		printf -- './xml.bash --beautify-file to_be_beautified.xml\n'
+		printf -- '````````````````````\n\n'
+		printf -- 'Implemented Functions\n'
+		printf -- '---------------------\n'
+		printf -- 'Not documented yet, please check the source code.\n\n'
+		printf -- 'Support\n'
+		printf -- '-------\n'
+		printf -- 'Please visit our issue tracker:  \n'
+		printf -- 'https://github.com/Lin-Buo-Ren/xml.bash/issues\n\n'
+	} 1>&2
 	return 0
 }; declare -fr _xml_bash_print_help;
 
