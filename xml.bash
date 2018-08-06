@@ -30,7 +30,7 @@ declare -ar _XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 ## This function is called near the end of the file,
 ## with the script's command-line parameters as arguments
 _xml_bash_init(){
-	if ! process_commandline_parameters; then
+	if ! _xml_bash_process_commandline_parameters "${@}"; then
 		printf\
 			'Error: %s: Invalid command-line parameters.\n'\
 			"${FUNCNAME[0]}"\
@@ -188,7 +188,7 @@ _xml_bash_process_commandline_parameters() {
 			case "${parameters[0]}" in
 				--help\
 				|-h)
-					print_help;
+					_xml_bash_print_help;
 					exit 0
 					;;
 				--debug\
@@ -215,7 +215,9 @@ _xml_bash_process_commandline_parameters() {
 	return 0
 }; declare -fr _xml_bash_process_commandline_parameters
 
-# init "${@}"
+if [ "${#BASH_SOURCE[*]}" = 1 ]; then
+	_xml_bash_init "${@}"
+fi
 
 ## This script is based on the GNU Bash Shell Script Template project
 ## https://github.com/Lin-Buo-Ren/GNU-Bash-Shell-Script-Template
