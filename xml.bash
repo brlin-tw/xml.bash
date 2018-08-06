@@ -45,11 +45,11 @@ _xml_bash_init(){
 
 _xml_bash_create_temp_file(){
 	mktemp\
-			--tmpdir\
-			bash.xml.XXXXXX.xml
+		--tmpdir\
+		bash.xml.XXXXXX.xml
 }
 
-# Remove data from XML file specified by XPath 
+# Remove data from XML file specified by XPath
 xml_remove_xpath(){
 	local -r xml_file="$1"; shift
 	local -r node_xpath="$1"
@@ -58,29 +58,29 @@ xml_remove_xpath(){
 		-)
 			xmlstarlet\
 				edit\
-					--pf\
-					--ps\
-					--delete\
-					"${node_xpath}"
-		;;
+				--pf\
+				--ps\
+				--delete\
+				"${node_xpath}"
+			;;
 		*)
 			local temp_file
 			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
 			xmlstarlet\
 				edit\
-					--pf\
-					--ps\
-					--delete\
-					"${node_xpath}"\
-					"${xml_file}"\
-					>"${temp_file}"
+				--pf\
+				--ps\
+				--delete\
+				"${node_xpath}"\
+				"${xml_file}"\
+				>"${temp_file}"
 
 			mv\
 				--force\
 				"${temp_file}"\
 				"${xml_file}"
-		;;
+			;;
 	esac
 	return
 }
@@ -94,23 +94,23 @@ xml_transform_file(){
 		-)
 			xmlstarlet\
 				transform\
-					"${xsl_file}"
-		;;
+				"${xsl_file}"
+			;;
 		*)
 			local temp_file
 			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
 			xmlstarlet\
 				transform\
-					"${xsl_file}"\
-					"${xml_file}"\
-					>"${temp_file}"
+				"${xsl_file}"\
+				"${xml_file}"\
+				>"${temp_file}"
 
 			mv\
 				--force\
 				"${temp_file}"\
 				"${xml_file}"
-		;;
+			;;
 	esac
 	return
 }
@@ -123,23 +123,23 @@ xml_beautify_file(){
 		-)
 			xmlstarlet\
 				format\
-					--indent-tab
-		;;
+				--indent-tab
+			;;
 		*)
 			local temp_file
 			temp_file="$(_xml_bash_create_temp_file)"; local -r temp_file
 
 			xmlstarlet\
 				format\
-					--indent-tab\
-					"${xml_file}"\
-					>"${temp_file}"
+				--indent-tab\
+				"${xml_file}"\
+				>"${temp_file}"
 
 			mv\
 				--force\
 				"${temp_file}"\
 				"${xml_file}"
-		;;
+			;;
 	esac
 
 }
@@ -187,13 +187,13 @@ _xml_bash_process_commandline_parameters() {
 			break
 		else
 			case "${parameters[0]}" in
-				--help\
-				|-h)
+					--help\
+					|-h)
 					_xml_bash_print_help;
 					exit 0
 					;;
-				--debug\
-				|-d)
+					--debug\
+					|-d)
 					enable_debug=Y
 					;;
 				*)
