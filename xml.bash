@@ -225,7 +225,7 @@ _xml_bash_process_commandline_parameters() {
 			case "${parameters[0]}" in
 					--help\
 					|-h)
-					_xml_bash_print_help;
+					_xml_bash_print_help
 					exit 0
 					;;
 					--debug\
