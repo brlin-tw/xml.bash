@@ -202,7 +202,7 @@ _xml_bash_print_help(){
 		printf -- 'Support\n'
 		printf -- '-------\n'
 		printf -- 'Please visit our issue tracker:  \n'
-		printf -- 'https://github.com/Lin-Buo-Ren/xml.bash/issues\n\n'
+		printf -- '<https://github.com/Lin-Buo-Ren/xml.bash/issues>\n\n'
 	} 1>&2
 	return 0
 }; declare -fr _xml_bash_print_help;
