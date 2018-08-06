@@ -1,0 +1,36 @@
+# Travis CI Configuration
+# https://docs.travis-ci.com
+# This file is based on
+# TravisCI · koalaman/shellcheck Wiki
+# https://github.com/koalaman/shellcheck/wiki/TravisCI
+## Use container-based infrastructure for quicker build start-up
+sudo: false
+
+## We only support Ubuntu 14.04 and newer
+dist: trusty
+
+language: bash
+
+git:
+  # Git Clone Depth - Customizing the Build - Travis CI
+  # https://docs.travis-ci.com/user/customizing-the-build/#Git-Clone-Depth
+  # > Please note that if you use a depth of 1 and have a queue of jobs, Travis CI won’t build commits that are in the queue when you push a new commit.
+  depth: 1
+
+addons:
+  apt:
+    sources:
+    - git-core
+    packages:
+    - realpath      # Merged to GNU Coreutils in Ubuntu 16.04
+    - git           # Update Git due to missing `worktree` sub-command(git-core is not enough)
+
+install:
+- pip install --user pre-commit
+
+before_script:
+# Run pre-commit hooks on changed file at HEAD
+- git diff-tree -z --no-commit-id --name-only -r HEAD | xargs --null pre-commit run --files
+
+cache:
+  pip: true
