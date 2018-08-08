@@ -195,7 +195,7 @@ _xml_bash_print_help(){
 		printf -- 'Specify single dash(`-`) for input XML file to indicate input from standard input device(stdin) and output to standard output device(stdout)\n\n'
 		printf -- '### xml_beautify_file / --beautify-file _xml_file_to_be_beautified_ ###\n'
 		printf -- 'Beautify the specified XML file.\n\n'
-		printf -- '### xml_remove_xpath / --remove-xpath _xpath_to_be_removed_ ###\n'
+		printf -- '### xml_remove_xpath / --remove-xpath _xml_file_ _xpath_to_be_removed_ ###\n'
 		printf -- 'Remove the specified element using XPath.\n\n'
 		printf -- '### xml_transform_file / --transform-file _xsl_file_ _xml_file_to_be_transformed\n'
 		printf -- 'Transform the specified XML file using a XSL file\n\n'
