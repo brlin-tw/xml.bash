@@ -31,7 +31,19 @@ declare -ar _XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 ## This function is called near the end of the file,
 ## with the script's command-line parameters as arguments
 _xml_bash_init(){
-	if ! _xml_bash_process_commandline_parameters "${@}"; then
+	local \
+		mode=none \
+		xsl_file \
+		xml_file \
+		xpath
+
+	if ! \
+		_xml_bash_process_commandline_parameters \
+		mode \
+		xsl_file \
+		xml_file \
+		xpath \
+		"${@}"; then
 		printf\
 			'Error: %s: Invalid command-line parameters.\n'\
 			"${FUNCNAME[0]}"\
@@ -39,6 +51,28 @@ _xml_bash_init(){
 		_xml_bash_print_help
 		exit 1
 	fi
+
+	case "${mode}" in
+		beautify-file)
+			xml_beautify_file \
+				"${xml_file}"
+			;;
+		remove-xpath)
+			xml_remove_xpath \
+				"${xml_file}" \
+				"${xpath}"
+			;;
+		transform-file)
+			xml_transform_file \
+				"${xsl_file}" \
+				"${xml_file}"
+			;;
+		*)
+			printf -- \
+				'Error: Illegal mode selected, please report bug.\n' \
+				1>&2
+			;;
+	esac
 
 	exit 0
 }; declare -fr _xml_bash_init
@@ -212,11 +246,19 @@ _xml_bash_process_commandline_parameters() {
 		return 0
 	fi
 
+	local -n mode="${1}"; shift
+	local -n xsl_file="${1}"; shift
+	local -n xml_file="${1}"; shift
+	local -n xpath="${1}"; shift
+
 	# modifyable parameters for parsing by consuming
 	local -a parameters=("${@}")
 
 	# Normally we won't want debug traces to appear during parameter parsing, so we add this flag and defer it activation till returning(Y: Do debug)
 	local enable_debug=N
+
+	# We only allow 1 subcommand per command
+	local -i count_mode_specified=0
 
 	while true; do
 		if [ "${#parameters[@]}" -eq 0 ]; then
@@ -232,6 +274,85 @@ _xml_bash_process_commandline_parameters() {
 					|-d)
 					enable_debug=Y
 					;;
+				--beautify-file)
+					mode=beautify-file
+					(( count_mode_specified += 1 ))
+
+					# shift 1 parameter
+					unset 'parameters[0]'
+					if [ "${#parameters[@]}" -ne 0 ]; then
+						parameters=("${parameters[@]}")
+					fi
+
+					# Error if no parameter left
+					if [ "${#parameters[@]}" -eq 0 ]; then
+						printf -- \
+							'Error: %s requires 1 argument.\n' \
+							--beautify-file \
+							1>&2
+						return 1
+					fi
+
+					# Assign argument and leave the parameter to be shifted at the end-of-loop
+					xml_file="${parameters[0]}"
+					;;
+				--remove-xpath)
+					mode=remove-xpath
+					(( count_mode_specified += 1 ))
+
+					# shift 1 parameter
+					unset 'parameters[0]'
+					if [ "${#parameters[@]}" -ne 0 ]; then
+						parameters=("${parameters[@]}")
+					fi
+
+					# Error if no parameter left
+					if [ "${#parameters[@]}" -lt 2 ]; then
+						printf -- \
+							'Error: %s requires 2 argument.\n' \
+							--remove-xpath \
+							1>&2
+						return 1
+					fi
+
+					# Assign argument and leave the parameter to be shifted at the end-of-loop
+					xml_file="${parameters[0]}"
+					xpath="${parameters[1]}"
+
+					# shift 1 parameter
+					unset 'parameters[0]'
+					if [ "${#parameters[@]}" -ne 0 ]; then
+						parameters=("${parameters[@]}")
+					fi
+					;;
+				--transform-file)
+					mode=transform-file
+					(( count_mode_specified += 1 ))
+
+					# shift 1 parameter
+					unset 'parameters[0]'
+					if [ "${#parameters[@]}" -ne 0 ]; then
+						parameters=("${parameters[@]}")
+					fi
+
+					# Error if no parameter left
+					if [ "${#parameters[@]}" -lt 2 ]; then
+						printf -- \
+							'Error: %s requires 2 argument.\n' \
+							--transform-file \
+							1>&2
+						return 1
+					fi
+
+					xsl_file="${parameters[0]}"
+					xml_file="${parameters[1]}"
+
+					# shift 1 parameter
+					unset 'parameters[0]'
+					if [ "${#parameters[@]}" -ne 0 ]; then
+						parameters=("${parameters[@]}")
+					fi
+					;;
 				*)
 					printf 'Error: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
 					return 1
@@ -244,6 +365,14 @@ _xml_bash_process_commandline_parameters() {
 			fi
 		fi
 	done
+
+	if [ "${count_mode_specified}" -gt 1 ]; then
+		printf -- \
+			'%s: Error: Only one subcommand may be specified at a time.\n' \
+			"${FUNCNAME[0]}" \
+			1>&2
+		return 1
+	fi
 
 	if [ "${enable_debug}" = Y ]; then
 		trap 'trap_return "${FUNCNAME[0]}"' RETURN
