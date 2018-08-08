@@ -233,7 +233,7 @@ _xml_bash_process_commandline_parameters() {
 					enable_debug=Y
 					;;
 				*)
-					printf 'ERROR: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
+					printf 'Error: Unknown command-line argument "%s"\n' "${parameters[0]}" >&2
 					return 1
 					;;
 			esac
