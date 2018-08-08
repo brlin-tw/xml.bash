@@ -36,7 +36,7 @@ _xml_bash_init(){
 			'Error: %s: Invalid command-line parameters.\n'\
 			"${FUNCNAME[0]}"\
 			1>&2
-		print_help
+		_xml_bash_print_help
 		exit 1
 	fi
 
