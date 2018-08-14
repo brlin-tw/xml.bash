@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-#shellcheck disable=SC2034
+# A Bourn-again Shell(bash) library and console utility to manipulate XML markup documents
+# 林博仁 © 2018
 
 ## Makes debuggers' life easier - Unofficial Bash Strict Mode
 ## BASHDOC: Shell Builtin Commands - Modifying Shell Behavior - The Set Builtin
@@ -9,15 +10,58 @@ set \
 	-o nounset \
 	-o pipefail
 
+## Runtime Dependencies Checking
+declare\
+	runtime_dependency_checking_result=still-pass\
+	required_software
+
+for required_command in \
+	basename \
+	dirname \
+	realpath \
+	xmlstarlet; do
+	if ! command -v "${required_command}" &>/dev/null; then
+		runtime_dependency_checking_result=fail
+
+		case "${required_command}" in
+			basename \
+			|dirname \
+			|realpath)
+				required_software='GNU Coreutils'
+				;;
+			xmlstarlet)
+				required_software='XMLStarlet command line XML toolkit'
+				;;
+			*)
+				required_software="${required_command}"
+				;;
+		esac
+
+		printf -- \
+			'Error: This program requires "%s" to be installed and its executables in the executable searching paths.\n' \
+			"${required_software}" \
+			1>&2
+		unset required_software
+	fi
+done; unset required_command required_software
+
+if [ "${runtime_dependency_checking_result}" = fail ]; then
+	printf -- \
+		'Error: Runtime dependency checking fail, the progrom cannot continue.\n' \
+		1>&2
+	exit 1
+fi; unset runtime_dependency_checking_result
+
 ## Non-overridable Primitive Variables
 ## BASHDOC: Shell Variables » Bash Variables
 ## BASHDOC: Basic Shell Features » Shell Parameters » Special Parameters
-if [ -v "BASH_SOURCE[0]" ]; then
+if [ -v 'BASH_SOURCE[0]' ]; then
 	_XML_BASH_RUNTIME_EXECUTABLE_PATH="$(realpath --strip "${BASH_SOURCE[0]}")"
 	_XML_BASH_RUNTIME_EXECUTABLE_FILENAME="$(basename "${_XML_BASH_RUNTIME_EXECUTABLE_PATH}")"
 	_XML_BASH_RUNTIME_EXECUTABLE_NAME="${_XML_BASH_RUNTIME_EXECUTABLE_FILENAME%.*}"
 	_XML_BASH_RUNTIME_EXECUTABLE_DIRECTORY="$(dirname "${_XML_BASH_RUNTIME_EXECUTABLE_PATH}")"
 	_XML_BASH_RUNTIME_COMMANDLINE_BASECOMMAND="${0}"
+	# shellcheck disable=SC2034
 	declare -r \
 		_XML_BASH_RUNTIME_EXECUTABLE_PATH \
 		_XML_BASH_RUNTIME_EXECUTABLE_FILENAME \
@@ -181,7 +225,9 @@ xml_beautify_file(){
 ## Traps: Functions that are triggered when certain condition occurred
 ## Shell Builtin Commands » Bourne Shell Builtins » trap
 _xml_bash_trap_errexit(){
-	printf 'An error occurred and the script is prematurely aborted\n' 1>&2
+	printf \
+		'An error occurred and the script is prematurely aborted\n' \
+		1>&2
 	return 0
 }; declare -fr _xml_bash_trap_errexit
 
@@ -192,12 +238,19 @@ _xml_bash_trap_exit(){
 _xml_bash_trap_return(){
 	local returning_function="${1}"
 
-	printf 'DEBUG: %s: returning from %s\n' "${FUNCNAME[0]}" "${returning_function}" 1>&2
+	printf \
+		'DEBUG: %s: returning from %s\n' \
+		"${FUNCNAME[0]}" \
+		"${returning_function}" \
+		1>&2
 }; declare -fr _xml_bash_trap_return
 
 _xml_bash_trap_interrupt(){
-	printf 'Recieved SIGINT, script is interrupted.\n' 1>&2
-	return 0
+	printf '\n' # Separate previous output
+	printf \
+		'Recieved SIGINT, script is interrupted.' \
+		1>&2
+	return 1
 }; declare -fr _xml_bash_trap_interrupt
 
 _xml_bash_print_help(){
@@ -265,12 +318,12 @@ _xml_bash_process_commandline_parameters() {
 			break
 		else
 			case "${parameters[0]}" in
-					--help\
+					--help \
 					|-h)
 					_xml_bash_print_help
 					exit 0
 					;;
-					--debug\
+					--debug \
 					|-d)
 					enable_debug=Y
 					;;
@@ -388,5 +441,5 @@ fi
 ## This script is based on the GNU Bash Shell Script Template project
 ## https://github.com/Lin-Buo-Ren/GNU-Bash-Shell-Script-Template
 ## and is based on the following version:
-declare -r META_BASED_ON_GNU_BASH_SHELL_SCRIPT_TEMPLATE_VERSION=v1.26.0-32-g317af27-dirty
+## GNU_BASH_SHELL_SCRIPT_TEMPLATE_VERSION="v3.3.0"
 ## You may rebase your script to incorporate new features and fixes from the template
