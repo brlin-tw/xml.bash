@@ -432,7 +432,7 @@ _xml_bash_process_commandline_parameters() {
 	fi
 
 	if [ "${enable_debug}" = Y ]; then
-		trap 'trap_return "${FUNCNAME[0]}"' RETURN
+		trap '_xml_bash_trap_return "${FUNCNAME[0]}"' RETURN
 		set -o xtrace
 	fi
 	return 0
