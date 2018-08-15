@@ -322,13 +322,13 @@ _xml_bash_process_commandline_parameters() {
 			break
 		else
 			case "${parameters[0]}" in
-					--help \
-					|-h)
+				--help \
+				|-h)
 					_xml_bash_print_help
 					exit 0
 					;;
-					--debug \
-					|-d)
+				--debug \
+				|-d)
 					enable_debug=Y
 					;;
 				--beautify-file)
