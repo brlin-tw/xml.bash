@@ -76,7 +76,7 @@ declare -ar _XML_BASH_RUNTIME_COMMANDLINE_PARAMETERS=("${@}")
 ## with the script's command-line parameters as arguments
 _xml_bash_init(){
 	local \
-		mode=none \
+		mode=default \
 		xsl_file \
 		xml_file \
 		xpath
@@ -100,6 +100,10 @@ _xml_bash_init(){
 		beautify-file)
 			xml_beautify_file \
 				"${xml_file}"
+			;;
+		default)
+			_xml_bash_print_help
+			exit 0
 			;;
 		remove-xpath)
 			xml_remove_xpath \
